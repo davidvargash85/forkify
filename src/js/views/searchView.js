@@ -1,23 +1,6 @@
-import { elements } from './base';
+import { elements, truncateTitles } from './base';
 
 export const getInput = () => elements.searchField.value;
-
-const truncateTitles = (title, maxSize) => {
-    if (title <= maxSize) {
-        return title;
-    }
-
-    let result = [];
-
-    title.split(' ').reduce((acc, word) => {
-        if (acc + word.length <= maxSize) {
-            result.push(word);
-        }
-        return acc + word.length;
-    }, 0);
-
-    return `${result.join(' ')}...`;
-}
 
 const showPageBtn = (page, type) => {
     const html = `

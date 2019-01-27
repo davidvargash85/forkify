@@ -6,6 +6,8 @@ export const elements = {
     searchResultsPages: document.querySelector('.results__pages'),
     recipe: document.querySelector('.recipe'),
     shoppingList: document.querySelector('.shopping__list'),
+    likesMenu: document.querySelector('.likes'),
+    likesList: document.querySelector('.likes__list'),
 };
 
 export const elementStrings = {
@@ -28,5 +30,21 @@ export const clearLoader = () => {
     if(loader){
         loader.parentElement.removeChild(loader);
     }
+}
 
+export const truncateTitles = (title, maxSize) => {
+    if (title <= maxSize) {
+        return title;
+    }
+
+    let result = [];
+
+    title.split(' ').reduce((acc, word) => {
+        if (acc + word.length <= maxSize) {
+            result.push(word);
+        }
+        return acc + word.length;
+    }, 0);
+
+    return `${result.join(' ')}...`;
 }

@@ -1,16 +1,13 @@
-// Global app controller
 import Search from './models/Search';
-import * as searchView from './views/searchView';
-import * as recipeView from './views/recipeView';
-import * as shoppingListView from './views/shoppingListView'
-import {
-    clearLoader,
-    setLoader,
-    elements
-} from './views/base';
 import Recipe from './models/Recipe';
 import ShoppingList from './models/ShoppingList';
 import LikedList from './models/LikedList';
+
+import { clearLoader, setLoader, elements } from './views/base';
+import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
+import * as shoppingListView from './views/shoppingListView';
+import * as likeView from './views/likeView';
 
 /* APP GLOBAL STATE
 - Search object 
@@ -19,7 +16,6 @@ import LikedList from './models/LikedList';
 - Liked recipes
 */
 const state = {};
-
 
 const searchCtrl = async () => {
 
@@ -104,25 +100,36 @@ elements.searchResultsPages.addEventListener('click', (e) => {
     }
 });
 
+//handler for liked recipes
 const likeCtrl = () => {
     //create liked list in state if does not exist
     if(!state.likedList) {
         state.likedList = new LikedList();
     }
+    
     //check if likedList contais current recipe Id
     //add to list in case does not exist
     if(!state.likedList.contains(state.selectedRecipe.id)) {
-        state.likedList.addItem(
+        const like = state.likedList.addItem(
             state.selectedRecipe.id,
             state.selectedRecipe.title,
             state.selectedRecipe.publisher,
-            state.selectedRecipe.imageUrl);
-            recipeView.toggleLikeBtn(true);
-    } else {   //remove from list if already exist
+            state.selectedRecipe.imageUrl
+        );
+
+        //showing the like heart in the recipe
+        recipeView.toggleLikeBtn(true);
+
+        //add the liked recipe to the likes view
+        likeView.displayLike(like);
+
+    //remove from list if already exist
+    } else {   
         state.likedList.removeItem(state.selectedRecipe.id);
         recipeView.toggleLikeBtn(false);
     }
-    console.log(state.likedList);
+
+    likeView.likesMenuVisible(state.likedList.items.length > 0);
 };
 
 //recipe events (servings, like, add to shopping list)
@@ -165,3 +172,9 @@ elements.shoppingList.addEventListener('click', (e) => {
     }
 });
 
+// // //GLOBAL INITIALIZATION
+// const init = () => {
+//     likesView.likesVisible(false);
+// };
+
+// init();

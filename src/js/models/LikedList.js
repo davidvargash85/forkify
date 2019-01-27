@@ -4,13 +4,13 @@ export default class LikedList {
         this.items = [];
     }
 
-    addItem(recipeId, title, publisher, image) {
+    addItem(recipeId, title, publisher, imageUrl) {
         
         const newItem = {
             recipeId: recipeId,
             title: title,
             publisher: publisher,
-            image: image
+            imageUrl: imageUrl
         }; 
 
         this.items.push(newItem);
