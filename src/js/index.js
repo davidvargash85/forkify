@@ -103,14 +103,14 @@ elements.searchResultsPages.addEventListener('click', (e) => {
 //handler for liked recipes
 const likeCtrl = () => {
     //create liked list in state if does not exist
-    if(!state.likedList) {
-        state.likedList = new LikedList();
-    }
-    
+    // if (!state.likedList) {
+    //     state.likedList = new LikedList();
+    // }
+
     //check if likedList contais current recipe Id
     //add to list in case does not exist
-    if(!state.likedList.contains(state.selectedRecipe.id)) {
-        const like = state.likedList.addItem(
+    if (!state.likedList.contains(state.selectedRecipe.id)) {
+        const likeItem = state.likedList.addItem(
             state.selectedRecipe.id,
             state.selectedRecipe.title,
             state.selectedRecipe.publisher,
@@ -121,7 +121,7 @@ const likeCtrl = () => {
         recipeView.toggleLikeBtn(true);
 
         //add the liked recipe to the likes view
-        likeView.displayLike(like);
+        likeView.displayLike(likeItem);
 
     //remove from list if already exist
     } else {   
@@ -172,9 +172,12 @@ elements.shoppingList.addEventListener('click', (e) => {
     }
 });
 
-// // //GLOBAL INITIALIZATION
-// const init = () => {
-//     likesView.likesVisible(false);
-// };
+window.addEventListener('load', () => {
+    state.likedList = new LikedList();
+    
+    state.likedList.readStorage();
 
-// init();
+    likeView.likesMenuVisible(state.likedList.items.length > 0);
+
+    state.likedList.items.forEach(i => likeView.displayLike(i));
+});
